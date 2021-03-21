@@ -10,19 +10,27 @@ import {Subject} from 'rxjs';
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
 
-  private recipes: Recipe[] = [
-    new Recipe('Test Recipe', 'Test Recipe Description', 'https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2018/12/Shakshuka-19.jpg',
-      [
-        new Ingredient('Meat', 1),
-        new Ingredient('Potato', 5)
-      ]),
-    new Recipe('Test Recipe 2', 'Test Recipe Description 2', 'https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2018/12/Shakshuka-19.jpg',
-      [
-        new Ingredient('Bread', 1),
-        new Ingredient('Carrot', 5)
-      ])
-  ];
-  constructor(private shoplistService: ShoppingListService) { }
+   // private recipes: Recipe[] = [
+   //   new Recipe('Test Recipe', 'Test Recipe Description', 'https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2018/12/Shakshuka-19.jpg',
+   //     [
+   //       new Ingredient('Meat', 1),
+   //       new Ingredient('Potato', 5)
+   //     ]),
+   //   new Recipe('Test Recipe 2', 'Test Recipe Description 2', 'https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2018/12/Shakshuka-19.jpg',
+   //     [
+   //       new Ingredient('Bread', 1),
+   //       new Ingredient('Carrot', 5)
+   //     ])
+   // ];
+  private recipes: Recipe[] = [];
+
+  constructor(private shoplistService: ShoppingListService) {
+  }
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes() {
     return this.recipes.slice();
@@ -32,7 +40,7 @@ export class RecipeService {
     return this.recipes[index];
   }
 
-  addIngredientsToShoppingList (ingredients: Ingredient[]) {
+  addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.shoplistService.addIngredients(ingredients);
   }
 
